@@ -1,0 +1,484 @@
+creational patterns
+
+in creational patterns there are few pattern types. there are
+	factory method
+	abstract factory pattern
+	singleton
+	prototype
+
+1. factory method
+
+ factory method provides an interface for creating objects in superclass but also it allows that superclass to alter the type of objects that will be created
+
+example
+
+ class Sinhala:
+
+	def __init__(self):
+		self.translation = {"dog" = "balla"}
+
+	def lacalize(self, msg:str):
+		return self.translations.get(msg, msg)
+
+class English:
+
+	def localize(self, msg: str):
+		return msg
+
+
+def get_localizer(language: str = "English"):
+
+    
+	localizers = {
+       		"English": EnglishLocalizer,
+        	"Sinhala": SinhalaLocalizer,
+    	}
+
+    	return localizers[language]()
+
+
+def main():
+
+if __name == "__main__":
+	import docters
+	
+	doctest.testmod()
+
+
+2. Abstract factory
+
+Abstract Factory is a creational design pattern that allows to produce families of related objects without specifying their concrete classes.
+
+example
+
+
+
+import random
+
+
+class PetShop:
+
+    
+
+    	def __init__(self, animal_factory=None):
+        	"""pet_factory is our abstract factory."""
+
+        	self.pet_factory = animal_factory
+
+    	def show_pet(self):
+        	"""Creates and shows a pet using the abstract factory"""
+
+        	pet = self.pet_factory()
+        	print("I have a lovely {}".format(pet))
+        	print("they {}".format(pet.speak()))
+
+
+class Dog:
+    	def speak(self):
+        	return "woof"
+
+    	def __str__(self):
+        	return "Dog"
+
+class Cat:
+    	def speak(self):
+        	return "meow"
+
+    	def __str__(self):
+        	return "Cat"
+
+
+# Show pets with various factories
+if __name__ == "__main__":
+
+    	# A Shop that sells only dogs
+    	dog_shop = PetShop(Dog)
+    	dog_shop.show_pet()
+    	print("")
+
+
+3. prototype 
+
+
+Prototype is a creational design pattern that allows to copy existing objects without making your code dependent on their classes.
+
+
+
+example
+
+
+
+class Prototype:
+
+    	value = 'default'
+
+    	def clone(self, **attrs):
+        	
+        	obj = self.__class__()
+        	obj.__dict__.update(attrs)
+        	return obj
+
+
+class PrototypeDispatcher:
+    	def __init__(self):
+    	    self._objects = {}
+
+    	def get_objects(self):
+        	"""Get all objects"""
+        	return self._objects
+
+    	def register_object(self, name, obj):
+        	"""Register an object"""
+        	self._objects[name] = obj
+
+    	def unregister_object(self, name):
+       
+        	del self._objects[name]
+
+
+def main():
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
+
+
+
+
+2. behavioral patterns
+
+
+1.iterator pattern
+
+Iterator is a behavioral design pattern that lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.).
+
+
+example
+
+def count_to(count):
+   
+    numbers = ["one", "two", "three", "four", "five"]
+    for number in numbers[:count]:
+    	yield number
+
+
+# Test the generator
+count_to_two = lambda: count_to(2)
+count_to_five = lambda: count_to(5)
+
+
+def main():
+  
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
+
+2. command 
+Command is a behavioral design pattern that turns a request into a stand-alone object that contains all information about the request. This transformation lets you parameterize methods with different requests, delay or queue a request’s execution, and support undoable operations.
+
+example
+
+
+
+
+class HideFileCommand:
+    	"""
+    	A command to hide a file given its name
+    	"""
+
+    	def __init__(self):
+        	# an array of files hidden, to undo them as needed
+        	self._hidden_files = []
+
+    	def execute(self, filename):
+        	print(f'hiding {filename}')
+        	self._hidden_files.append(filename)
+
+    	def undo(self):
+        	filename = self._hidden_files.pop()
+        	print(f'un-hiding {filename}')
+
+
+class DeleteFileCommand:
+    	"""
+    	A command to delete a file given its name
+    	"""
+
+    	def __init__(self):
+        	# an array of deleted files, to undo them as needed
+        	self._deleted_files = []
+
+    	def execute(self, filename):
+        	print(f'deleting {filename}')
+        	self._deleted_files.append(filename)
+
+    	def undo(self):
+        	filename = self._deleted_files.pop()
+        	print(f'restoring {filename}')
+
+
+class MenuItem:
+    	"""
+    	The invoker class. Here it is items in a menu.
+    	"""
+
+    	def __init__(self, command):
+        	self._command = command
+
+    	def on_do_press(self, filename):
+        	self._command.execute(filename)
+
+    	def on_undo_press(self):
+        	self._command.undo()
+
+
+def main():
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
+
+3.mediator
+
+
+Mediator is a behavioral design pattern that lets you reduce chaotic dependencies between objects. The pattern restricts direct communications between the objects and forces them to collaborate only via a mediator object.
+
+example
+
+
+
+class ChatRoom:
+    """Mediator class"""
+
+    def display_message(self, user, message):
+        print("[{} says]: {}".format(user, message))
+
+
+class User:
+    """A class whose instances want to interact with each other"""
+
+    def __init__(self, name):
+        self.name = name
+        self.chat_room = ChatRoom()
+
+    def say(self, message):
+        self.chat_room.display_message(self, message)
+
+    def __str__(self):
+        return self.name
+
+
+def main():
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
+
+
+Structural patterns
+
+
+Structural patterns explain how to merge objects and classes into larger structures while keeping these structures flexible and efficient.
+
+
+1.facade
+
+Facade is a structural design pattern that provides a simplified interface to a library, a framework, or any other complex set of classes.
+
+
+example
+
+
+
+
+# Complex computer parts
+class CPU:
+    """
+    Simple CPU representation.
+    """
+    def freeze(self):
+        print("Freezing processor.")
+
+    def jump(self, position):
+        print("Jumping to:", position)
+
+    def execute(self):
+        print("Executing.")
+
+
+class Memory:
+    """
+    Simple memory representation.
+    """
+    def load(self, position, data):
+        print("Loading from {0} data: '{1}'.".format(position, data))
+
+
+class SolidStateDrive:
+    """
+    Simple solid state drive representation.
+    """
+    def read(self, lba, size):
+        return "Some data from sector {0} with size {1}".format(lba, size)
+
+
+class ComputerFacade:
+    """
+    Represents a facade for various computer parts.
+    """
+    def __init__(self):
+        self.cpu = CPU()
+        self.memory = Memory()
+        self.ssd = SolidStateDrive()
+
+    def start(self):
+        self.cpu.freeze()
+        self.memory.load("0x00", self.ssd.read("100", "1024"))
+        self.cpu.jump("0x00")
+        self.cpu.execute()
+
+
+def main():
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod(optionflags=doctest.ELLIPSIS)
+
+
+2. bridge
+
+Bridge is a structural design pattern that lets you split a large class or a set of closely related classes into two separate hierarchies—abstraction and implementation—which can be developed independently of each other.
+
+
+
+# ConcreteImplementor 1/2
+class DrawingAPI1:
+    def draw_circle(self, x, y, radius):
+        print('API1.circle at {}:{} radius {}'.format(x, y, radius))
+
+
+# ConcreteImplementor 2/2
+class DrawingAPI2:
+    def draw_circle(self, x, y, radius):
+        print('API2.circle at {}:{} radius {}'.format(x, y, radius))
+
+
+# Refined Abstraction
+class CircleShape:
+    def __init__(self, x, y, radius, drawing_api):
+        self._x = x
+        self._y = y
+        self._radius = radius
+        self._drawing_api = drawing_api
+
+    # low-level i.e. Implementation specific
+    def draw(self):
+        self._drawing_api.draw_circle(self._x, self._y, self._radius)
+
+    # high-level i.e. Abstraction specific
+    def scale(self, pct):
+        self._radius *= pct
+
+
+def main():
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
+
+
+3. composite
+
+Composite is a structural design pattern that lets you compose objects into tree structures and then work with these structures as if they were individual objects.
+
+
+
+
+
+class Graphic:
+    def render(self):
+        raise NotImplementedError("You should implement this.")
+
+
+class CompositeGraphic(Graphic):
+    def __init__(self):
+        self.graphics = []
+
+    def render(self):
+        for graphic in self.graphics:
+            graphic.render()
+
+    def add(self, graphic):
+        self.graphics.append(graphic)
+
+    def remove(self, graphic):
+        self.graphics.remove(graphic)
+
+
+class Ellipse(Graphic):
+    def __init__(self, name):
+        self.name = name
+
+    def render(self):
+        print("Ellipse: {}".format(self.name))
+
+
+if __name__ == '__main__':
+    ellipse1 = Ellipse("1")
+    ellipse2 = Ellipse("2")
+    ellipse3 = Ellipse("3")
+    ellipse4 = Ellipse("4")
+
+    graphic1 = CompositeGraphic()
+    graphic2 = CompositeGraphic()
+
+    graphic1.add(ellipse1)
+    graphic1.add(ellipse2)
+    graphic1.add(ellipse3)
+    graphic2.add(ellipse4)
+
+    graphic = CompositeGraphic()
+
+    graphic.add(graphic1)
+    graphic.add(graphic2)
+
+    graphic.render()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
